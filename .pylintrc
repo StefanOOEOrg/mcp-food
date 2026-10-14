@@ -1,0 +1,80 @@
+[MASTER]
+# Add files or directories to be skipped during linting
+ignore-patterns=.*__pycache__.*,.*\.pyc
+
+# Mirrors pytest.ini's pythonpath=src, so imports like `tools.sleep` resolve
+# regardless of how pylint is invoked (editor extension, plain CLI, CI).
+init-hook='import sys; sys.path.append("src")'
+
+[MESSAGES CONTROL]
+# Disable specific warnings that might be too strict for this project
+disable=
+
+[BASIC]
+# Good variable names which should always be accepted, separated by a comma
+good-names=i,j,k,x,y,z,_,id
+
+# Regular expression matching correct function names
+# Upper bound raised to 80 (from 50) to allow descriptive pytest test names,
+# where the name itself documents the scenario being tested.
+function-rgx=[a-z_][a-z0-9_]{2,80}$
+
+# Regular expression matching correct variable names
+variable-rgx=[a-z_][a-z0-9_]{2,50}$
+
+# Regular expression matching correct class names
+class-rgx=[A-Z_][a-zA-Z0-9_]*$
+
+# Regular expression matching correct constant names
+const-rgx=(([A-Z_][A-Z0-9_]*)|([a-z_][a-z0-9_]*)|(__.*__))$
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+# Allow the body of an if to be on the same line as the condition if it fits on max-line-length
+single-line-if-stmt=yes
+
+# Maximum number of lines in a module
+max-module-lines=1000
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=10
+
+# Maximum number of locals for function / method body
+max-locals=20
+
+# Maximum number of statements in function / method body
+max-statements=50
+
+# Maximum number of branches for function / method body
+max-branches=12
+
+# Maximum number of return statements in function / method body
+max-returns=6
+
+# Maximum number of public methods for a class (see R0903)
+max-public-methods=20
+
+# Maximum number of instance attributes for a class
+max-attributes=7
+
+# Minimum number of public methods for a class (see R0903)
+min-public-methods=0
+
+[IMPORTS]
+# List of modules that can be imported without being defined in the imports section
+ignored-modules=
+
+[TYPECHECK]
+# List of classes names for which member attributes should not be checked (useful for classes with dynamically set attributes)
+ignored-classes=BaseException,Exception,RuntimeError,ValueError,TypeError,AttributeError,KeyError,IndexError,StopIteration,GeneratorExit,ImportError,ModuleNotFoundError,NameError,UnboundLocalError,ZeroDivisionError,ArithmeticError,LookupError,MemoryError,OverflowError,FloatError,AssertionError,NotImplementedError,RecursionError,FileNotFoundError,PermissionError,IsADirectoryError,NotADirectoryError,InterruptedError,TimeoutError,ConnectionError,ConnectionRefusedError,ConnectionResetError,ConnectionAbortedError,ConnectionTimeoutError,EOFError,KeyboardInterrupt,SystemExit,EnvironmentError,IOError,WindowsError
+
+[MISCELLANEOUS]
+# List of note tags to take in consideration, separated by a comma
+notes=FIXME,TODO,XXX
+
+[LOGGING]
+# Logging modules to check that the string format arguments are consistent with the logging method parameters
+logging-modules=logging
