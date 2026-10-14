@@ -10,7 +10,8 @@ import calc
 import db
 import off
 from terms import to_german
-from tools._shared import FoodError, doc, food_tool
+from tools._shared import (OPTIONAL_NUMBER_SCHEMA, FoodError, AS_NUMBER, doc,
+                           food_tool)
 from tools.recipe import recipe_totals
 
 log = logging.getLogger(__name__)
@@ -18,15 +19,17 @@ log = logging.getLogger(__name__)
 
 class Amount(BaseModel):
     """One component of a meal: a food or a recipe, with its amount."""
-    food_id: Annotated[int | None, doc("food_id of a food (from food_search). Give either "
-                                       "food_id or recipe.")] = None
+    food_id: Annotated[int | None, AS_NUMBER, OPTIONAL_NUMBER_SCHEMA,
+                       doc("food_id of a food (from food_search). Give either food_id or "
+                           "recipe.")] = None
     recipe: Annotated[str | None, doc("Name of a saved recipe (from recipe_list). Give either "
                                       "food_id or recipe.")] = None
-    grams: Annotated[float | None, doc("Amount in grams (for drinks: ml ≈ g). For a recipe: "
-                                       "grams of the finished dish.")] = None
-    servings: Annotated[float | None, doc("Number of servings of the food, or of portions of "
-                                          "the recipe, e.g. 1.5. Used when grams is not "
-                                          "given; default 1.")] = None
+    grams: Annotated[float | None, AS_NUMBER, OPTIONAL_NUMBER_SCHEMA,
+                     doc("Amount in grams (for drinks: ml ≈ g). For a recipe: grams of the "
+                         "finished dish.")] = None
+    servings: Annotated[float | None, AS_NUMBER, OPTIONAL_NUMBER_SCHEMA,
+                        doc("Number of servings of the food, or of portions of the recipe, "
+                            "e.g. 1.5. Used when grams is not given; default 1.")] = None
 
 
 def _item(food_id: int) -> dict:

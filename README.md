@@ -133,7 +133,7 @@ Save a home-cooked dish as a recipe, or replace one with the same name. Every in
 |---|---|---|---|
 | `name` | text | yes | Name of the dish, e.g. 'Chili con Carne'. An existing recipe with exactly this name is replaced. |
 | `ingredients` | list | yes | All ingredients, e.g. [{'food_id': 812, 'grams': 500}, {'food_id': 77, 'grams': 400}]. |
-| `portions` | number | no (default `1`) | Number of portions the recipe makes. |
+| `portions` | number | no (default `1`) | AS_NUMBER of portions the recipe makes. |
 | `total_weight_g` | number | no (default `none`) | Weight of the finished dish in grams, if known. Needed to log amounts in grams ('450 g from the pot'). |
 | `notes` | text | no (default `none`) | Free notes, e.g. preparation. |
 

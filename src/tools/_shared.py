@@ -3,7 +3,7 @@ import functools
 from typing import Annotated, Callable
 
 from mcp.server.mcpserver.exceptions import ToolError
-from pydantic import Field
+from pydantic import BeforeValidator, Field, WithJsonSchema
 
 from server_instance import server
 
@@ -16,6 +16,24 @@ def doc(text: str):
     """Field with a description for the tool schema (keeps the signatures readable)."""
     return Field(description=text)
 
+
+def _number(value):
+    """'1', '1,5' or ' 70 ' → a number. Some models send the numbers inside list items as text,
+    and Hermes only converts top-level arguments before it validates them."""
+    if isinstance(value, str):
+        text = value.strip().replace(",", ".")
+        try:
+            return float(text) if "." in text else int(text)
+        except ValueError as exc:
+            raise ValueError(f"'{value}' is not a number") from exc
+    return value
+
+
+# A number that may also arrive as text (schema: number or numeric string).
+AS_NUMBER = BeforeValidator(_number)
+NUMBER_SCHEMA = WithJsonSchema({"anyOf": [{"type": "number"}, {"type": "string"}]})
+OPTIONAL_NUMBER_SCHEMA = WithJsonSchema(
+    {"anyOf": [{"type": "number"}, {"type": "string"}, {"type": "null"}]})
 
 RecipeName = Annotated[str, doc("Name of a saved recipe as recipe_list shows it, e.g. "
                                 "'Overnight Oats'. Case does not matter; a unique part of the "

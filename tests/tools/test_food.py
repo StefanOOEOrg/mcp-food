@@ -122,3 +122,16 @@ def test_list_shows_most_used_first():
     food_nutrition([Amount(food_id=often["food_id"], grams=10)])
     assert [f["name"] for f in food_list()] == ["Oft", "Selten"]
     assert rarely["source"] == "own food"
+
+
+def test_numbers_as_text_are_accepted(oats):
+    """Numbers inside list items may arrive as text ('70', '1,5'); the schema allows that."""
+    assert Amount(food_id=f"{oats}", grams="70").grams == 70
+    assert Amount(food_id=oats, servings="1,5").servings == 1.5
+    total = food_nutrition([Amount(food_id=str(oats), grams="50")])["total"]
+    assert total["kcal"] == 185
+    schema = Amount.model_json_schema()["properties"]
+    assert {"type": "string"} in schema["grams"]["anyOf"]
+    assert schema["grams"]["description"].startswith("Amount in grams")
+    with pytest.raises(ValueError, match="not a number"):
+        Amount(food_id=oats, grams="viel")

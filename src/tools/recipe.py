@@ -5,14 +5,16 @@ from pydantic import BaseModel
 
 import calc
 import db
-from tools._shared import FoodError, RecipeName, doc, food_tool
+from tools._shared import AS_NUMBER, NUMBER_SCHEMA, FoodError, RecipeName, doc, food_tool
 
 
 class Ingredient(BaseModel):
     """One ingredient of a recipe."""
-    food_id: Annotated[int, doc("food_id of the ingredient (from food_search).")]
-    grams: Annotated[float, doc("Amount in grams as it goes into the pot - raw weight for raw "
-                                "ingredients (ml ≈ g for liquids).")]
+    food_id: Annotated[int, AS_NUMBER, NUMBER_SCHEMA,
+                       doc("food_id of the ingredient (from food_search).")]
+    grams: Annotated[float, AS_NUMBER, NUMBER_SCHEMA,
+                     doc("Amount in grams as it goes into the pot - raw weight for raw "
+                         "ingredients (ml ≈ g for liquids).")]
 
 
 def _recipe(name: str) -> dict:
@@ -50,7 +52,7 @@ def recipe_save(
     ingredients: Annotated[list[Ingredient], doc("All ingredients, e.g. "
                                                  "[{'food_id': 812, 'grams': 500}, "
                                                  "{'food_id': 77, 'grams': 400}].")],
-    portions: Annotated[float, doc("Number of portions the recipe makes.")] = 1,
+    portions: Annotated[float, doc("AS_NUMBER of portions the recipe makes.")] = 1,
     total_weight_g: Annotated[float | None, doc("Weight of the finished dish in grams, if "
                                                 "known. Needed to log amounts in grams "
                                                 "('450 g from the pot').")] = None,
