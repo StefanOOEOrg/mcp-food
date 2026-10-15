@@ -92,7 +92,7 @@ def test_save_then_find_by_search_and_barcode():
 @pytest.mark.usefixtures("no_off")
 def test_servings_of_own_food():
     """servings use the serving size of the food."""
-    saved = food_save("Riegel", 400, 12, 70, 14, serving_g=40, serving_desc="1 Stück")
+    saved = food_save("Bar", 400, 12, 70, 14, serving_g=40, serving_desc="1 piece")
     total = food_nutrition([Amount(food_id=saved["food_id"], servings=2)])["total"]
     assert total["kcal"] == 320
 

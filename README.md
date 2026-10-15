@@ -40,14 +40,13 @@ venv/bin/python scripts/import_bls.py BLS_4_0_Daten_2025_DE.xlsx   # once
 | `OFF_TIMEOUT_SECONDS` | HTTP timeout for Open Food Facts (default 15) |
 | `LOG_LEVEL` | default `INFO` |
 
-On the ThinkCentre it is deployed with `sudo hermes-deploy mcp-food` (tc-ops `deploy/apps.conf`,
-`.env` linked from `/home/hermes/mcp-food/.env`) and started by Hermes:
+Install it with its own venv and `.env` and add it to Hermes' `config.yaml`:
 
 ```yaml
 mcp_servers:
   mcp-food:
-    command: /opt/hermes-apps/mcp-food/current/.venv/bin/python
-    args: [/opt/hermes-apps/mcp-food/current/src/main.py]
+    command: /path/to/mcp-food/.venv/bin/python
+    args: [/path/to/mcp-food/src/main.py]
 ```
 
 ## Development
