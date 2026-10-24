@@ -22,6 +22,8 @@ def fresh_schema(monkeypatch):
         with psycopg.connect(TEST_URL, connect_timeout=3):
             pass
     except psycopg.OperationalError:
+        if os.getenv("TEST_REQUIRE_DB") == "1":
+            pytest.fail(f"test database not reachable: {TEST_URL}")
         pytest.skip(f"test database not reachable: {TEST_URL}")
     monkeypatch.setattr(config, "DATABASE_URL", TEST_URL)
     db.conn().execute("drop schema if exists food cascade")
