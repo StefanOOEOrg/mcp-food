@@ -1,15 +1,28 @@
 # mcp-food
 
-MCP server (stdio) with the **nutrition values** of foods and of the user's recipes, for the
-Hermes profile `personal-trainer`. It only supplies numbers; the food diary itself is
+[![CI](https://github.com/StefanOOEOrg/mcp-food/actions/workflows/ci.yml/badge.svg)](https://github.com/StefanOOEOrg/mcp-food/actions/workflows/ci.yml)
+
+MCP server (stdio) with the **nutrition values** of foods and of your own recipes. It only
+supplies numbers; the food diary itself is
 [mcp-nutrition](https://github.com/StefanOOEOrg/mcp-nutrition), whose `meal_log` takes the
 same field names as the `total` of `food_nutrition` (`kcal`, `protein_g`, `carbs_g`, `fat_g`,
 `fiber_g`, `sugar_g`).
 
+- [Requirements](#requirements)
 - [Data sources](#data-sources)
 - [Setup](#setup)
+- [Project structure](#project-structure)
 - [Development](#development)
+- [Scope / Limitations](#scope--limitations)
 - [Tool reference](#tool-reference)
+
+## Requirements
+
+- **Python 3.11 or newer** — the pinned dependencies require it; the CI runs 3.11 and 3.14.
+- **Postgres 17** with the `food` schema (shared with mcp-nutrition; the `db/` folder of that repo
+  ships the container).
+- Internet access only for Open Food Facts lookups; own foods and BLS work offline.
+- Nothing else: no account, no API key, no open port — an MCP server over stdio for a local client.
 
 ## Data sources
 
@@ -49,6 +62,32 @@ mcp_servers:
     args: [/path/to/mcp-food/src/main.py]
 ```
 
+## Project structure
+
+```
+mcp-food/
+├── src/
+│   ├── calc.py              # nutrition maths (per 100 g, portions, recipe totals)
+│   ├── config.py            # FOOD_DATABASE_URL / OFF_* / LOG_LEVEL from the environment
+│   ├── db.py                # connection handling + schema init
+│   ├── main.py              # entry point (stdio)
+│   ├── mcp_server.py        # composition root: server + tools
+│   ├── off.py               # Open Food Facts client (search, barcode) with caching
+│   ├── schema.sql           # the `food` schema
+│   ├── server_instance.py   # the shared MCP server instance
+│   ├── terms.py             # term handling for search (German names, Austrian words)
+│   └── tools/               # food_* and recipe_* tools + _shared helpers
+├── tests/                   # run against a throwaway Postgres (TEST_DATABASE_URL)
+├── scripts/                 # BLS import + tool_reference.py
+├── .github/workflows/ci.yml # pytest against a Postgres service + pylint, on 3.11 and 3.14
+├── .env.example             # copy to .env
+├── .pylintrc
+├── pytest.ini
+├── requirements.txt / requirements-dev.txt
+├── LICENSE
+└── README.md
+```
+
 ## Development
 
 ```bash
@@ -63,6 +102,18 @@ venv/bin/python scripts/tool_reference.py   # regenerate the tool reference belo
 Every test drops and recreates the schema - never point `TEST_DATABASE_URL` at the real
 database.
 
+## Scope / Limitations
+
+- A single-user tool, not a service: it runs locally over stdio — no port of its own, no
+  authentication, no multi-user support.
+- It needs the Postgres container; without it every tool fails with a readable error, and the tests
+  skip locally (in CI they fail instead, via `TEST_REQUIRE_DB=1`).
+- Its data sources are uneven: own foods are only as good as their labels, Open Food Facts is
+  community data (and offline when the API is not reachable), BLS 4.0 only covers basic foods.
+- German food names are expected for BLS lookups; Austrian terms are translated, everything else is
+  matched literally.
+- Recipes use raw weights of the ingredients — cooked weights have to be weighed separately.
+
 ## Tool reference
 
 <!-- tool-reference:start -->
@@ -75,7 +126,7 @@ Search foods by name. Returns the hits per source, each with food_id, name, bran
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `query` | text | yes | Name of the food or product, e.g. 'Skyr', 'Spar Vital Skyr', 'Haferflocken', 'Hähnchenbrust roh'. Brand words narrow the search; every word must appear in the name or brand. |
+| `query` | text | yes | Name of the food or product, e.g. 'Skyr', 'Spar Vital Skyr', 'Haferflocken', 'chicken breast, raw'. Brand words narrow the search; every word must appear in the name or brand. |
 | `source` | `auto` / `my` / `off` / `bls` | no (default `'auto'`) | Where to search: 'auto' = all three (own foods, Open Food Facts Austria, BLS); 'my' = own foods only; 'off' = packaged products; 'bls' = basic ingredients (German names, add 'roh' for raw). |
 | `limit` | number | no (default `8`) | Maximum number of hits per source. |
 
@@ -157,3 +208,7 @@ Delete a recipe for good (there is no undo). The foods it used stay.
 | `name` | text | yes | Name of a saved recipe as recipe_list shows it, e.g. 'Overnight Oats'. Case does not matter; a unique part of the name is enough. |
 
 <!-- tool-reference:end -->
+
+## License
+
+[MIT](LICENSE)
