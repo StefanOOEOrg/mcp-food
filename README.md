@@ -1,7 +1,7 @@
 # mcp-food
 
 [![CI](https://github.com/StefanOOEOrg/mcp-food/actions/workflows/ci.yml/badge.svg)](https://github.com/StefanOOEOrg/mcp-food/actions/workflows/ci.yml)
-[![M8ven Verified](https://m8ven.ai/badge/mcp/stefanooeorg-mcp-food-1hxsuf?variant=verified)](https://m8ven.ai/mcp/stefanooeorg-mcp-food-1hxsuf)
+[![M8ven Score](https://m8ven.ai/badge/mcp/stefanooeorg-mcp-food-1hxsuf?v=43dcd016663196c48ecd80d2ea1fa189)](https://m8ven.ai/mcp/stefanooeorg-mcp-food-1hxsuf?s=readme)
 
 MCP server (stdio) with the **nutrition values** of foods and of your own recipes. It only
 supplies numbers; the food diary itself is
