@@ -80,9 +80,9 @@ mcp-food/
 │   └── tools/               # food_* and recipe_* tools + _shared helpers
 ├── tests/                   # run against a throwaway Postgres (TEST_DATABASE_URL)
 ├── scripts/                 # BLS import + tool_reference.py
-├── .github/workflows/ci.yml # pytest against a Postgres service + pylint, on 3.11 and 3.14
+├── .github/workflows/ci.yml # pytest against a Postgres service + ruff, on 3.11 and 3.14
 ├── .env.example             # copy to .env
-├── .pylintrc
+├── pyproject.toml           # ruff config: line length 100, rules E, F, I, UP, B
 ├── pytest.ini
 ├── requirements.txt / requirements-dev.txt
 ├── LICENSE
@@ -96,7 +96,7 @@ venv/bin/pip install -r requirements-dev.txt
 sudo docker run -d --rm --name pg-test -e POSTGRES_PASSWORD=test -e POSTGRES_DB=test \
     -p 127.0.0.1:55432:5432 --tmpfs /var/lib/postgresql/data postgres:17.11
 venv/bin/python -m pytest          # TEST_DATABASE_URL overrides the test database
-venv/bin/pylint src tests scripts  # must stay at 10/10
+venv/bin/ruff check src tests scripts   # the organization rule set, see pyproject.toml
 venv/bin/python scripts/tool_reference.py   # regenerate the tool reference below
 ```
 

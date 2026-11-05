@@ -48,4 +48,4 @@ jobs:
       - name: Tests
         run: python -m pytest -q -rs
       - name: Lint
-        run: python -m pylint src tests
+        run: python -m ruff check src tests

@@ -10,8 +10,7 @@ import calc
 import db
 import off
 from terms import to_german
-from tools._shared import (OPTIONAL_NUMBER_SCHEMA, FoodError, AS_NUMBER, doc,
-                           food_tool)
+from tools._shared import AS_NUMBER, OPTIONAL_NUMBER_SCHEMA, FoodError, doc, food_tool
 from tools.recipe import recipe_totals
 
 log = logging.getLogger(__name__)
@@ -161,7 +160,7 @@ def food_nutrition(
 
 
 @food_tool
-def food_save(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+def food_save(
     name: Annotated[str, doc("Product name, e.g. 'High Protein Milchreis'.")],
     kcal_100g: Annotated[float, doc("Energy in kcal per 100 g (label: 'Energie ... kcal').")],
     protein_100g: Annotated[float, doc("Protein in g per 100 g.")],

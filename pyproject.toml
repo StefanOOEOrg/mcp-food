@@ -1,0 +1,8 @@
+# ruff is the organization's only Python linter (see StefanOOEOrg/.github CONTRIBUTING.md).
+# The block below is copied verbatim between repositories; only target-version may differ.
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

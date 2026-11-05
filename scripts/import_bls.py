@@ -10,7 +10,7 @@ import openpyxl
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-import db  # noqa: E402  pylint: disable=wrong-import-position
+import db  # noqa: E402  # imported after sys.path is extended above
 
 CODES = {
     "ENERCC": "kcal_100g", "PROT625": "protein_100g", "CHO": "carbs_100g", "FAT": "fat_100g",

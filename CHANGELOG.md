@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Tooling:** linting runs through ruff only, with the organization rule set committed in
+  `pyproject.toml` (line length 100, `E, F, I, UP, B`); CI checks it on Python 3.11 and 3.14. The
+  previous linter and its config file are gone, so one rule set applies locally and in CI.
+
 ## 0.1.0 — 2026-10-24
 
 Initial release.
@@ -14,5 +20,5 @@ Initial release.
 - Postgres-backed (`food` schema, shared with mcp-nutrition); schema from `src/schema.sql`.
 - Local MCP server over stdio; configuration via `.env` (`FOOD_DATABASE_URL`, `OFF_USER_AGENT`,
   `OFF_TIMEOUT_SECONDS`, `LOG_LEVEL`); `.env.example` ships the template.
-- CI: pytest against a Postgres service plus pylint on Python 3.11 and 3.14 — the run fails when the
-  database is unreachable instead of silently skipping.
+- CI: pytest against a Postgres service plus a lint gate on Python 3.11 and 3.14 — the run fails when
+  the database is unreachable instead of silently skipping.
