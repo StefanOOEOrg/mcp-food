@@ -4,8 +4,14 @@ import pytest
 from mcp.server.mcpserver.exceptions import ToolError
 
 import off
-from tools.food import (Amount, food_barcode_lookup, food_list, food_nutrition, food_save,
-                        food_search)
+from tools.food import (
+    Amount,
+    food_barcode_lookup,
+    food_list,
+    food_nutrition,
+    food_save,
+    food_search,
+)
 
 
 @pytest.fixture(name="no_off")

@@ -12,10 +12,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from mcp import Client  # noqa: E402  pylint: disable=wrong-import-position
+from mcp import Client  # noqa: E402  # imported after sys.path is extended below
 
-import mcp_server  # noqa: E402  pylint: disable=wrong-import-position
-from tools import __all__ as MODULES  # noqa: E402  pylint: disable=wrong-import-position
+import mcp_server  # noqa: E402  # imported after sys.path is extended below
+from tools import __all__ as MODULES  # noqa: E402  # imported after sys.path is extended below
 
 START, END = "<!-- tool-reference:start -->", "<!-- tool-reference:end -->"
 TYPES = {"string": "text", "integer": "number", "number": "number", "boolean": "yes/no",

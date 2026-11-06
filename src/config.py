@@ -5,6 +5,7 @@ on validated, well-known settings instead of scattering os.getenv() calls
 across modules.
 """
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()

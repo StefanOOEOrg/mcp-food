@@ -1,8 +1,9 @@
 """Composition root: wires up the MCP server and registers all tools."""
 import logging
-from server_instance import server
+
 import config
 import tools
+from server_instance import server
 
 logging.basicConfig(
     level=config.LOG_LEVEL, format="%(asctime)s - %(levelname)s - %(message)s", force=True
