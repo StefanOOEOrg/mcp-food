@@ -49,3 +49,13 @@ jobs:
         run: python -m pytest -q -rs
       - name: Lint
         run: python -m ruff check src tests
+
+  ci-ok:
+    needs: [test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail unless the test job succeeded
+        run: |
+          echo "test: ${{ needs.test.result }}"
+          [ "${{ needs.test.result }}" = "success" ]
